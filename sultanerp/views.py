@@ -1067,7 +1067,7 @@ def document_management_view(request):
     media_root = settings.MEDIA_ROOT
     folders = {}
     exclude_folders = ["images", "wiki"]
-
+# https://www.tutorialspoint.com/python/os_walk.htm
     for root, dirs, files in os.walk(media_root):
         for dir in dirs:
             if dir not in exclude_folders:
