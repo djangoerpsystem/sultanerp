@@ -1,0 +1,5 @@
+https://djangopackages.org/packages/p/django-scheduler/
+https://django-scheduler.readthedocs.io/en/latest/
+https://github.com/llazzaro/django-scheduler
+https://github.com/llazzaro/django-scheduler/wiki
+
