@@ -1345,31 +1345,35 @@ def routines_and_daily_list(request):
 @login_required
 def daily_routines_detail(request, task_id):
     task = get_object_or_404(RoutineTasks, id=task_id)
-    all_routines_done = True
+    done_routines = Logs.objects.filter(user=request.user, log__in=task.routines.all(
+    ).values_list('routines', flat=True), done=True)
 
     if request.method == "POST":
-        for routine in task.routines.all():
-            checkbox_name = f"routine_{routine.id}"
-            if checkbox_name in request.POST:
-                log_entry = Logs(
-                    user=request.user,
-                    log=routine.routines,
-                    done=True
-                )
-                log_entry.save()
-            else:
-                all_routines_done = False
+        if "mark_as_done" in request.POST:
+            for routine in task.routines.all():
+                checkbox_name = f"routine_{routine.id}"
+                if checkbox_name in request.POST and not done_routines.filter(log=routine.routines):
+                    ## add entry to the stats/logs/routine_task_logs/
+                    log_entry = Logs(
+                        user=request.user,
+                        log=routine.routines,
+                        done=True
+                    )
+                    log_entry.save()
 
-        if all_routines_done:
-            task.completed = True
-            task.save()
-
-        return redirect('routine_list')
+        elif "undo" in request.POST:
+            for routine in task.routines.all():
+                checkbox_name = f"routine_{routine.id}"
+                if checkbox_name in request.POST:
+                    done_routines.filter(log=routine.routines).delete()
 
     context = {
-        'task': task
+        'task': task,
+        'done_routines': [log.log for log in done_routines]
     }
     return render(request, 'routines/routine_detail.html', context)
+
+
 
 
 # before there was 1 view function for daily routines but i decided to spereate the concerns and therefore created 2 views for each operation
