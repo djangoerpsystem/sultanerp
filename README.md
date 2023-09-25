@@ -9,3 +9,6 @@ https://github.com/llazzaro/django-scheduler
 https://github.com/llazzaro/django-scheduler/wiki
 but its not implemented!
 
+admin
+user: sultan
+password: sultan
