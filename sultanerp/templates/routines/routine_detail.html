@@ -16,14 +16,14 @@ Routine Task Details
     <div class="form-group">
         {% for routine in task.routines.all %}
             {% if routine.routines not in done_routines %}
-                <div class="custom-control custom-checkbox mb-2">
-                    <input type="checkbox" class="custom-control-input" id="routine_{{ routine.id }}" name="routine_{{ routine.id }}" value="{{ routine.id }}">
-                    <label class="custom-control-label" for="routine_{{ routine.id }}">{{ routine.routines }} ({{ routine.category.category }})</label>
+                <div class="mb-2">
+                    <input type="checkbox" class="" id="routine_{{ routine.id }}" name="routine_{{ routine.id }}" value="{{ routine.id }}">
+                    <label class="" for="routine_{{ routine.id }}">{{ routine.routines }} ({{ routine.category.category }})</label>
                 </div>
             {% else %}
-                <div class="custom-control custom-checkbox mb-2">
-                    <input type="checkbox" class="custom-control-input" id="routine_{{ routine.id }}" name="routine_{{ routine.id }}" value="{{ routine.id }}" checked>
-                    <label class="custom-control-label" for="routine_{{ routine.id }}">{{ routine.routines }} ({{ routine.category.category }}) - Already done</label>
+                <div class=" mb-2">
+                    <input type="checkbox" class="" id="routine_{{ routine.id }}" name="routine_{{ routine.id }}" value="{{ routine.id }}" checked>
+                    <label class="" for="routine_{{ routine.id }}">{{ routine.routines }} ({{ routine.category.category }}) - Already done</label>
                 </div>
             {% endif %}
         {% endfor %}
