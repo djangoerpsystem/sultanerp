@@ -1,0 +1,50 @@
+{% extends "_base.html" %}
+
+{% block title %}
+Routine Tasks List
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+
+<div class="container mt-4">
+    <div class="sticky-top bg-white py-2">
+        <h3>{{dynamic_texts.routines.text}}</h3>
+    </div>
+
+
+
+<div class="container mt-4">
+
+    <div class="card mb-4">
+        <div class="card-header">
+            Routine Tasks for Today
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for task in all_tasks_for_today %}
+                {% if not task.completed %}
+                <li class="list-group-item">
+                    <a href="{% url 'routine_detail' task.id %}">{{ task.title }}</a>
+                </li>        
+                {% endif %}
+            {% empty %}
+                <li class="list-group-item text-muted">{{ dynamic_texts.no_routine.text }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            All Routine Tasks
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for routine in routines %}
+                <li class="list-group-item">
+                    <a href="{% url 'routine_detail' routine.id %}">{{ routine.title }}</a>
+                </li>        
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+{% endblock %}

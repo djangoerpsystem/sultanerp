@@ -1,0 +1,39 @@
+
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" action="{% url 'get_cake_id' %}">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="cakePricew">{{ dynamic_texts.cake_price.text }}</label>
+                    <input type="number" step="0.10" class="form-control" id="cakePrice" name="cakePrice" required min="38">
+                </div>
+                
+                <div class="form-group">
+                    <label for="quittung">{{ dynamic_texts.quittung_number.text }}</label>
+                    {% comment %} https://www.w3schools.com/tags/att_input_pattern.asp the pattern attribute {% endcomment %}
+                    <input type="text" class="form-control" id="quittung" name="quittung" pattern="^[1-9]\d{5}$" title="{{ dynamic_texts.min_5_digits }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="orderdate">{{ dynamic_texts.order_date.text }}</label>
+                    <input type="date" class="form-control" id="orderdate" name="orderdate">
+                </div>
+
+                <div class="form-group">
+                    <label for="ordertype">{{ dynamic_texts.order_type.text }}</label>
+
+                    <select name="ordertype" id="ordertypeId" class="form-control" required>
+                        <option value="pickup">{{ dynamic_texts.pickup.text }}</option>
+                        <option value="delivery">{{ dynamic_texts.delivery.text }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group mt-3">
+                    <input type="submit" class="{{dynamic_texts.btn_green.text}}" value="{{ dynamic_texts.get_cake_id.text }}">
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <br>

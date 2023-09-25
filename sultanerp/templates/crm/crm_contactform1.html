@@ -1,0 +1,18 @@
+ {% for notice in submission_notices %}
+    <div class="card drag" data-id="{{ notice.id }}" style="width: 18rem;">
+        <div class="card-header">
+            {{ notice.form_name|add:notice.id|stringformat:"s" }}
+            {{ notice.form_name }}{{ notice.id }}
+            {% comment %} {{ notice.form_name + notice.id }} {% endcomment %}
+        </div>
+        <div class="card-body">
+            <p>Email: {{ notice.email }}</p>
+            <p>Phone: {{ notice.phone }}</p>
+            <p>Company: {{ notice.field1 }}</p>
+            {% comment %} <p>Field 2: {{ notice.field2 }}</p> {% endcomment %}
+            <p>Name: {{ notice.field3 }}</p>
+            <p>Text: {{ notice.field4 }}</p>
+        </div>
+    </div>
+    <br>
+    {% endfor %}

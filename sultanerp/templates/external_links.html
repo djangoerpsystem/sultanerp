@@ -1,0 +1,21 @@
+{% extends "_base.html" %}
+
+{% block title %}
+{{ dynamic_texts.external_links.text }}
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+
+<div class="container mt-4">
+    <h1 class="display-4 mb-4">{{ dynamic_texts.external_links.text }}</h1>
+    <ul class="list-group">
+        {% for link in links %}
+            <li class="list-group-item">
+                <a href="{{ link.link }}" target="_blank">{{ link.title }}</a> - {{ link.description }}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{%extends "_base.html"%}
+
+{% block title %}
+Test
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+
+<h1> Test </h1>
+
+{{insert_me}}
+
+ <p> static paragraph </p> <br>
+
+{{delete_me}}
+
+{% endblock %}

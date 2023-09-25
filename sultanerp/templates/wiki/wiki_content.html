@@ -1,0 +1,41 @@
+{% extends "_base.html" %}
+
+{% block content %}
+{% include "navbar.html" %}
+
+<div class="container mt-4"> 
+
+    <a href="{% url 'category_detail' category %}" class="btn btn-outline-secondary mb-3"> 
+        &larr; {{dynamic_texts.back_to.text}} {{dynamic_texts.categories.text}}
+    </a>
+
+    <h2 class="display-4 mb-4">{{ wiki.header }}</h2> 
+
+    <div class="card mb-4"> 
+        <div class="card-body">
+            {% for content in wiki.contents.all %}
+                <h3 class="h5 card-title">{{ content.title }}</h3> 
+                <p class="card-text">{{ content.content }}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-5">
+        {% for image in wiki.images.all %}
+            {% if image.image %}
+                <div class="card mb-4">
+                    <img src="{{ image.image.url }}" alt="{{ image.image_alt_title }}" class="card-img-top img-fluid"> 
+                </div>
+            {% elif image.image_resized %}
+                <div class="card mb-4">
+                    <img src="{{ image.image_resized.url }}" alt="{{ image.image_alt_title }}" class="card-img-top img-fluid"> 
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+</div> 
+
+{% endblock %}

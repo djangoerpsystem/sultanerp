@@ -1,0 +1,35 @@
+{% extends "_base.html" %}
+
+{% block title %}
+    Orders
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+{% include "_orders.html" %}
+<br>
+
+{% if show_orders_list %}
+    {% include "orders/orders_list.html" %}
+{% endif %}
+
+{% if request.resolver_match.url_name == 'cake_order' %}
+    {% include "orders/cake_orders.html" %}
+{% endif %}
+
+{% if request.resolver_match.url_name == 'supplier_orders' %}
+    {% include "orders/supplier_orders.html" %}
+{% endif %}
+
+{% if request.resolver_match.url_name == 'internal_orders' %}
+    {% include "orders/internal_orders.html" %}
+{% endif %}
+
+
+{% if request.resolver_match.url_name == 'customer_orders' %}
+    {% include "orders/customer_orders.html" %}
+{% endif %}
+
+{% endblock %}
+
+

@@ -1,0 +1,18 @@
+{% extends "_base.html" %}
+
+{% block title %}
+Admin Tools
+{% endblock %}
+{% block content %}
+{% include "navbar.html" %}
+<br>
+<h1>Admin Tools</h1>
+
+<br>
+
+{% for tool in admin_tools %}
+    <li><a href="{% url tool.reference %}">{{ tool.title }}</a></li>
+{% endfor %}
+
+<br>
+{% endblock %}

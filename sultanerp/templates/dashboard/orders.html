@@ -1,0 +1,9 @@
+{% comment %} Orders widget {% endcomment %}
+<div class="card mt-3">
+    <div class="card-body">
+        <h5 class="card-title">Order Management</h5>
+        <p>Number of Supplier Orders: <a href="{% url 'supplier_orders_list_view' %}">{{ supplier_orders_count }}</a></p>
+        <p>Number of Internal Orders: <a href="{% url 'internal_orders_list_view' %}">{{ internal_orders_count }}</a></p>
+        <p>Number of Customer Orders: <a href="{% url 'customer_orders_list_view' %}">{{ customer_orders_count }}</a></p>
+    </div>
+</div>

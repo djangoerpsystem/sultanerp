@@ -1,0 +1,43 @@
+{% extends "_base.html" %}
+
+{% block content %}
+{% include "navbar.html" %}
+
+<div class="container mt-4">
+    <h2 class="{{dynamic_texts.h2_class.text}}">Document Management</h2>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form action="{% url 'documents' %}" method="get" class="form-inline">
+                <div class="form-group mb-2">
+                    <label for="folder" class="mr-2">Select a Folder:</label>
+                    <select name="folder_name" id="folder" class="form-control mr-2">
+                        {% for folder_name, folder_content in folders.items %}
+                            <option value="{{ folder_name }}" {% if folder_name == selected_folder_name %}selected{% endif %}>{{ folder_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-outline-secondary mb-4">Show Content</button>
+            </form>
+
+            {% if selected_folder_name %}
+                <h3 class="h4 mb-3">Content of Folder: {{ selected_folder_name }}</h3>
+                <ul class="list-group list-group-flush mb-4">
+                {% for document_filename in selected_folder_content %}
+                    <li class="list-group-item">
+                        <a href="{% url 'folder_content_view' folder_name=selected_folder_name document_filename=document_filename %}" 
+                        target="blank" class="float-right">{{ document_filename }} </a></li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+
+    <h3 class="h4 mb-3">Links:</h3>
+    <ul class="list-group">
+        <li class="list-group-item"><a href="/urlaubsantrag">Urlaubsantrag stellen</a></li>
+        <li class="list-group-item"><a href="/view_applications">Urlaubsanträge anzeigen</a></li>
+    </ul>
+</div>
+
+{% endblock %}

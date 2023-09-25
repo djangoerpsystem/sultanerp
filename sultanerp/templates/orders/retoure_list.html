@@ -1,0 +1,26 @@
+{% extends "_base.html" %}
+
+{% block title %}
+    Retoure List
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+{% include "_orders.html" %}
+
+<div class="container mt-4">
+    <h1>All Retoures</h1>
+    
+    <ul class="list-group mt-3">
+        {% for retoure in all_retoures %}
+            <li class="list-group-item">
+                <a href="{% url 'retoure_detail' retoure.id %}">Retoure ID: {{ retoure.id }}</a>, 
+                <span class="text-muted">{{ retoure.timeStamp }}</span>, 
+                {{ retoure.branch.branchTitle }},
+                <a href="{% url 'retoure_detail' retoure.id %}" class="btn btn-link">{{dynamic_texts.view_details.text}}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

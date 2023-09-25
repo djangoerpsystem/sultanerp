@@ -1,0 +1,149 @@
+{% extends "_base.html" %}
+
+{% block title %}
+    {{dynamic_texts.vacation_application.text}}
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+<div class="container mt-4">
+    <h1 class="{{dynamic_texts.header_class.text}}">{{dynamic_texts.vacation_application.text}}</h1>
+
+    <form method="post" class="mt-4">
+        {% csrf_token %}
+
+        <p>Firma: {{ company_name }}</p>
+        <p>Mitarbeiter Name: {{ request.user.first_name }} {{ request.user.last_name }}</p>
+
+        <b><p id="availableDays">Aktuelle {{dynamic_texts.vacation_application.text}}: {{ aktuelle_urlaubstage }}</p></b>
+        
+        <div class="form-group">
+            <label for="startDate">Hiermit beantrage ich Urlaub vom:</label>
+            <input type="date" id="startDate" name="start_date" value="{{ form.start_date.value|default:'' }}" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="endDate">Hiermit beantrage ich Urlaub bis:</label>
+            <input type="date" id="endDate" name="end_date" value="{{ form.end_date.value|default:'' }}" class="form-control">
+        </div>
+
+        <p>Beantragte Urlaubstage: <span id="dateDifference"></span></p>
+        <p>Feiertage & Sonntage abgezogen: <span id="nonWorkingDays"></span></p>
+        <p>Endgültige Urlaubstage: <span id="finalDays"></span></p>
+
+        {% if vacation_application.days_on_holiday %}
+            <p>
+                The vacation period includes {{ vacation_application.days_on_holiday }} public holiday(s).
+            </p>
+        {% endif %}
+
+        <input type="hidden" id="daysRequestedNetto" name="free_days">
+        <p>{{dynamic_texts.vacation_must_be_confirmed.text}}</p>
+        <input type="submit" value="Antrag abschicken" class="{{dynamic_texts.btn_green.text}}">
+
+    </form>
+
+    <br><hr><br>
+
+    <h3>Feiertage in München {{ current_year }}</h3>
+    <br>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name des Feiertags</th>
+                <th>Datum</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for holiday in public_holidays %}
+            <tr>
+                <td>{{ holiday.title }}</td>
+                <td>{{ holiday.date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <pre class="text-muted">(Quelle: https://www.api-feiertage.de)</pre>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+<script>
+const publicHolidays = [
+    {% for holiday in public_holidays %}
+        "{{ holiday.date }}",
+    {% endfor %}
+];
+</script>
+
+<script>
+function countSundaysBetweenDates(start, end) {
+    let sundays = 0;
+    while (start <= end) {
+        if (start.day() === 0) { // Sunday
+            sundays++;
+        }
+        start.add(1, 'days');
+    }
+    return sundays;
+}
+
+function countPublicHolidaysBetweenDates(start, end) {
+    return publicHolidays.filter(holiday => {
+        const date = moment(holiday);
+        return date.isBetween(start, end, null, '[]');
+    }).length;
+}
+
+function calculateDateDifference() {
+    let startDateInput = document.getElementById("startDate");
+    let endDateInput = document.getElementById("endDate");
+    let dateDifferenceDisplay = document.getElementById("dateDifference");
+    let nonWorkingDaysDisplay = document.getElementById("nonWorkingDays");
+    let finalDaysDisplay = document.getElementById("finalDays");
+
+    let start = moment(startDateInput.value);
+    let end = moment(endDateInput.value);
+
+    if (startDateInput.value && endDateInput.value) {
+        let difference = end.diff(start, 'days') + 1;
+        dateDifferenceDisplay.textContent = difference + ' days';
+
+        let sundays = countSundaysBetweenDates(start.clone(), end.clone()); // clone Method in jQuery https://www.w3schools.com/jquery/html_clone.asp
+        let holidays = countPublicHolidaysBetweenDates(start.clone(), end.clone());
+        let totalNonWorkingDays = sundays + holidays;
+
+        nonWorkingDaysDisplay.textContent = totalNonWorkingDays + ' days';
+
+        let finalDays = difference - totalNonWorkingDays;
+        finalDaysDisplay.textContent = finalDays + ' days';
+    } else {
+        dateDifferenceDisplay.textContent = ''; 
+        nonWorkingDaysDisplay.textContent = ''; 
+        finalDaysDisplay.textContent = '';
+    }
+}
+
+document.getElementById("startDate").addEventListener("change", calculateDateDifference);
+document.getElementById("endDate").addEventListener("change", calculateDateDifference);
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function (event) {
+        const finalDaysSpan = document.getElementById("finalDays");
+        const vacationDaysValue = parseInt(finalDaysSpan.textContent, 10);
+        const aktuelleUrlaubstage = {{ aktuelle_urlaubstage }};
+
+        if (vacationDaysValue > aktuelleUrlaubstage) {
+            alert('Du hast nicht genug Urlaubstage verfügbar.');
+            event.preventDefault();
+        }
+    });
+});
+
+</script>
+
+{% endblock %}

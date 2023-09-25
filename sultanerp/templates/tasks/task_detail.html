@@ -1,0 +1,52 @@
+{% extends "_base.html" %}
+
+{% block content %}
+    {% include "navbar.html" %}
+
+    <div class="container mt-5">
+        {% if task %}
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="font-weight-bold card-title mb-3">{{ task.title }}</h3>
+
+                    <div class="mb-3 pb-2 border-bottom">
+                        <p><span class="font-weight-bold">Due Date:</span> {{ task.dueDate }}</p>
+                    </div>
+                    <div class="mb-3 pb-2 border-bottom">
+                        <p><span class="font-weight-bold">Responsible Person:</span> {{ task.responsiblePerson }}</p>
+                    </div>
+                    <div class="mb-3 pb-2 border-bottom">
+                        <p><span class="font-weight-bold">Status:</span> {{ task.status }}</p>
+                    </div>
+                    <div class="mb-3 pb-2 border-bottom">
+                        <p><span class="font-weight-bold">Description:</span> {{ task.description }}</p>
+                    </div>
+                    <div class="mb-3 pb-2 border-bottom">
+                        <p><span class="font-weight-bold">Priority:</span> {{ task.priority }}</p>
+                    </div>
+                    <div class="mb-4 pb-2">
+                        <p><span class="font-weight-bold">Category:</span> {{ task.category }}</p>
+                    </div>
+
+                    <div class="mb-3 pb-2 border-bottom">
+                        <small><span class="font-weight-bold">Task created on:</span> {{ task.created }}</small>
+                    </div>
+
+
+                    <a href="{% url 'task_list' %}" class="btn btn-warning mb-2">{{dynamic_texts.back.text}}:</a>
+                    <a href="{% url 'edit_task' task.id %}" class="btn btn-primary mb-2">Bearbeiten</a>
+                    <button type="button" class="btn btn-secondary mb-2" onclick="printPage()">Drucken</button>
+                    <script type="text/javascript">
+                        function printPage() { window.print(); }
+                    </script>
+                    <a href="{% url 'add_task' %}" class="{{dynamic_texts.btn.text}}">Neue Aufgabe</a>
+                    
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-danger" role="alert">
+                Task not found.
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

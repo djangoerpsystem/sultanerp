@@ -1,0 +1,64 @@
+{% extends "_base.html" %}
+
+{% block title %}
+Send Message
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+
+<style>
+    .sent .timestamp, .received .timestamp {
+        font-size: small;
+        margin-top: 5px;
+    }
+    .sent {
+        text-align: right;
+    }
+</style>
+
+<br>
+<a href="/messenger" class="{{dynamic_texts.btn.text}}">Back to all Messages</a>
+<br><br>
+
+<div class="container mt-5">
+    
+  <div class="sticky-top bg-white">
+    <h3>{{dynamic_texts.previous_messages.text}} {{dynamic_texts.with.text}} {{ recipient.username }}</h3>
+  </div>
+    {% for message in previous_messages %}
+        <div class="row mb-3">
+            <div class="col-md-8 {% if message.sender == request.user %}ms-auto text-end{% else %}me-auto text-start{% endif %}">
+                <div class="card {% if message.sender == request.user %}bg-light{% else %}bg-secondary text-white{% endif %}">
+                    <div class="card-body">
+                        {{ message.content|truncatechars:1000 }}
+                        <div class="timestamp">
+                            <span style="font-size: 11px;">{{ message.timestamp|date:"d.m.y H:i" }}</span>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<div class="container mt-5">
+    {% if recipient %}
+      <h3>Send Message to {{ recipient.username }}</h3>
+      <form method="post" action="{% url 'send_message_no_id' %}" class="mt-3">
+        {% csrf_token %}
+        <input type="hidden" name="recipient_id" value="{{ recipient.id }}">
+        <div class="mb-3">
+            <label for="content" class="form-label">Message:</label>
+            <textarea name="content" id="content" class="form-control"></textarea>
+        </div>
+        <button type="submit" class="{{dynamic_texts.btn.text}}">{{dynamic_texts.send_message.text}}</button>
+      </form>
+    {% else %}
+      <p>No recipient selected.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

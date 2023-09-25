@@ -1,0 +1,18 @@
+
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">Tasks for today</h5>
+            <small>({{ today }}):</small>
+                
+            <ul class="list-group list-group-flush">
+                {% for task in tasks_for_today %}
+                    <li class="list-group-item">
+                        <a href="tasks/{{ task.id }}" class="text-decoration-none">{{ task.title }}</a>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">No tasks for today.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+

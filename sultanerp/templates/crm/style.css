@@ -1,0 +1,23 @@
+      .kanban-board {
+      display: flex;
+      gap: 16px;
+      }
+
+      .kanban-column {
+      width: 25%; 
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+      }
+
+      .kanban-cards {
+      margin-top: 10px;
+      }
+
+      .kanban-card {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      }

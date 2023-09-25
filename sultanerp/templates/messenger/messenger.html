@@ -1,0 +1,30 @@
+{% extends "_base.html" %}
+
+{% block title %}
+Messenger
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+<h2>Messenger</h2>
+
+{% include "messenger/messages_list.html" with conversations=conversations %}
+
+{% comment %} dont remember why i included theese but maybe ill use it later {% endcomment %}
+{% comment %} <div class="container mt-4 border">
+  {% if recipient %}
+    {% include "conversation.html" with recipient=recipient messages=messages %}
+  {% endif %}
+</div>
+
+<div class="container mt-4 border">
+  {% if recipient %}
+    {% include "send_message.html" with recipient=recipient %}
+  {% endif %}
+</div> {% endcomment %}
+
+{% comment %} later include the Instagram Messages through API {% endcomment %}
+{% comment %} later include the facebook Business Messages through API {% endcomment %}
+{% comment %} later include the WhatsApp Business Messages through API {% endcomment %}
+
+{% endblock %}

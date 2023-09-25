@@ -1,0 +1,47 @@
+{% extends "_base.html" %}
+
+{% block title %}
+   Retoure Detail
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+{% include "_orders.html" %}
+
+<div class="container mt-4">
+    <h3>{{ dynamic_texts.retoure_details.text }}</h3>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <p><strong>ID:</strong> {{ retoure.id }}</p>
+            <p><strong>{{ dynamic_texts.timestamp.text }}:</strong> {{ retoure.timeStamp }}</p>
+            <p><strong>{{ dynamic_texts.branch.text }}:</strong> {{ retoure.branch.branchTitle }}</p>
+        
+        
+        
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>{{ dynamic_texts.product_title.text }}</th>
+                        <th>{{ dynamic_texts.amount.text }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product, amount in products %}
+                    <tr>
+                        <td>{{ product.title }}</td>
+                        <td>{{ amount }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+    <div class="mt-4">
+        <a href="{% url 'retoure_list' %}" class="{{dynamic_texts.btn.text}}">{{dynamic_texts.back_to.text}} {{dynamic_texts.retoure.text}} {{dynamic_texts.list.text}}</a>
+    </div>
+
+
+{% endblock %}

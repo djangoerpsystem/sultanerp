@@ -1,0 +1,55 @@
+{% extends "_base.html" %}
+
+{% block title %}
+    Customer Order Detail
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+
+<div class="container mt-3">
+    <h2 class="mb-4">Customer Order ID: {{ order.id }}</h2>
+
+    <div class="mb-3">
+        {% if order.delivery_address %}
+            <p><strong>{{ dynamic_texts.delivery_date.text }}:</strong> {{ order.orderDate }}</p>
+            <p><strong>{{ dynamic_texts.delivery_address.text }}:</strong> {{ order.delivery_address }}</p>
+        {% elif order.pickup_address %}
+            <p><strong>{{ dynamic_texts.pickup_date.text }}:</strong> {{ order.orderDate }}</p>
+            <p><strong>{{ dynamic_texts.pickup_address.text }}:</strong> {{ order.pickup_address }}</p>
+        {% else %}
+            <p><strong>{{ dynamic_texts.pickup_date.text }}:</strong> {{ order.orderDate }}</p>
+            <p><strong>Filiale:</strong> {{ order.branch.branchTitle }}</p>
+        {% endif %}
+    </div>
+
+    <h3 class="mb-3">Produkte:</h3>
+    <ul class="list-group mb-3">
+        {% for product_name, amount in product_amounts %}
+            <li class="list-group-item">{{ product_name }}: {{ amount }}</li>
+        {% endfor %}
+    </ul>
+    <p class="mb-2"><strong>Total Price:</strong> {{ order.total_price }}</p>
+    <p class="mb-2"><strong>Quittungs Nummer:</strong> {{ order.quittung}} </p> 
+
+    <p class="mb-3">Payment status: 
+        <span class="badge {% if order.paid %}badge-success{% else %}badge-danger{% endif %}">
+            {% if order.paid %}
+                {{ dynamic_texts.paid.text }}
+            {% else %}
+                {{ dynamic_texts.not_paid.text }}
+            {% endif %}
+        </span>
+    </p>
+    <br>
+
+    <div class="mb-3">
+        <button type="button" class="btn btn-secondary mb-2" onclick="printPage()">{{dynamic_texts.print.text}}</button>
+            <a href="{% url 'customer_orders' %}" class="{{dynamic_texts.btn.text}}">{{dynamic_texts.new_order.text}}</a>
+    </div>
+    {% load static%}
+    <script src="{% static '/sultanerp/javascript/print.js' %}"></script> <!-- Print page-->
+
+
+</div>
+{% endblock %}

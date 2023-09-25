@@ -1,0 +1,15 @@
+{% comment %} Routines widget {% endcomment %}
+<div class="card mt-3">
+    <div class="card-body">
+        <h5 class="card-title">Routines for today</h5>
+        <ul>
+            {% for task in all_tasks_for_today %}
+                {% if not task.completed %}
+                <li>
+                    <a href="{% url 'routine_detail' task.id %}">{{ task.title }}</a>
+                </li>        
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>

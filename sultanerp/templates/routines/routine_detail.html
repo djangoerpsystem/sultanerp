@@ -1,0 +1,37 @@
+{% extends "_base.html" %}
+
+{% block title %}
+Routine Task Details
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+
+<div class="container mt-4">
+    <h3 class="mb-3">Checklist for {{ task.title }}</h3>
+
+    <form method="post" class="mb-3">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+            {% for routine in task.routines.all %}
+                {% if routine.routines not in done_routines_for_user %}
+
+                <div class="custom-control custom-checkbox mb-2">
+                        <input type="checkbox" class="custom-control-input" id="routine_{{ routine.id }}" name="routine_{{ routine.id }}" value="{{ routine.id }}">
+                        <label class="custom-control-label" for="routine_{{ routine.id }}">{{ routine.routines }} ({{ routine.category.category }})</label>
+                    </div>
+                {% else %}
+
+                <p class="text-muted">{{ routine.routines }} ({{ routine.category.category }}) - Already done</p>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <input type="hidden" name="task_id" value="{{ task.id }}">
+        <button type="submit" class="{{dynamic_texts.btn.text}}">Mark as done</button>
+
+    </form>
+</div>
+{% endblock %}

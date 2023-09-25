@@ -1,0 +1,31 @@
+
+{% extends "_base.html" %}
+
+
+{% block title %}
+Statistics
+{% endblock %}
+
+{% block content %}
+
+{% if user.is_staff %}
+
+{% include "navbar.html" %}
+{% include "stats/_statistics.html" %}
+
+{% if request.resolver_match.url_name == 'cake_order_statistics' %}
+<br>
+    Total cake orders this month: <strong>{{ total_orders }}</strong><br>
+    Total cake orders this month: <strong>{{ total_income }}0€</strong><br>
+{% endif %}
+
+{% if request.resolver_match.url_name == 'retoure_statistics' %}
+    {{ message }}
+{% endif %}
+
+{% else %}
+    <p>{{dynamic_texts.not_auth.text}}</p>
+{% endif %}
+
+{% endblock %}
+

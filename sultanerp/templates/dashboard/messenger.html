@@ -1,0 +1,13 @@
+{% comment %} Messenger widget {% endcomment %}
+<div class="card mt-3">
+    <div class="card-body">
+        <h5 class="card-title">Messenger</h5>
+        {% if message %}
+            <a href="{% url 'messenger' %}">
+                <p>New message from {{ message.sender.username }}: {{ new_messages_count }} <br>{{message.content}}</p>
+            </a>
+        {% else %}
+            <p>No new messages.</p>
+        {% endif %}
+    </div>
+</div>

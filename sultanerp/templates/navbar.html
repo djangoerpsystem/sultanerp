@@ -1,0 +1,107 @@
+{% comment %} <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="{% url 'dashboard' %}">ERP SYSTEM</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'crm_view' %}">CRM</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'orders_view' %}">{{dynamic_texts.orders.text}}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'task_list' %}">{{dynamic_texts.tasks.text}}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'routine_list' %}">{{dynamic_texts.routines.text}}</a>
+      </li>      
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'inventory' %}">{{dynamic_texts.inventory.text}}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'documents' %}">{{dynamic_texts.documents.text}}</a>
+      </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'messenger' %}">{{dynamic_texts.messenger.text}}</a>
+      </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'calendar' %}">{{dynamic_texts.calendar.text}}</a>
+      </li>
+      </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'wiki_index' %}">{{dynamic_texts.handbook.text}}</a>
+      </li>
+{% if user.is_staff %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'statistics' %}">{{dynamic_texts.statistics.text}}</a>
+      </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'logs' %}">{{dynamic_texts.logs.text}}</a>
+      </li>
+{% endif %}
+      
+{% if user.user_level.hierarchy < 5 %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'external_links' %}">{{dynamic_texts.external_links.text}}</a>
+    </li>
+{% endif %}
+
+
+
+    </ul>
+  </div>
+</nav> {% endcomment %}
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-2">
+  <a class="navbar-brand font-weight-bold" href="{% url 'dashboard' %}">ERP SYSTEM</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'crm_view' %}">CRM</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'orders_view' %}">{{dynamic_texts.orders.text}}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'task_list' %}">{{dynamic_texts.tasks.text}}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'routine_list' %}">{{dynamic_texts.routines.text}}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'inventory' %}">{{dynamic_texts.inventory.text}}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'documents' %}">{{dynamic_texts.documents.text}}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'messenger' %}">{{dynamic_texts.messenger.text}}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'calendar' %}">{{dynamic_texts.calendar.text}}</a>
+      </li>
+      <li class="nav-item border-right">
+        <a class="nav-link" href="{% url 'wiki_index' %}">{{dynamic_texts.handbook.text}}</a>
+      </li>
+      {% if user.is_staff %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'statistics' %}">{{dynamic_texts.statistics.text}}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'logs' %}">{{dynamic_texts.logs.text}}</a>
+      </li>
+      {% endif %}
+      {% if user.user_level.hierarchy < 5 %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'external_links' %}">{{dynamic_texts.external_links.text}}</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>

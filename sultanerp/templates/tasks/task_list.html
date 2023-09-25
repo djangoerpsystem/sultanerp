@@ -1,0 +1,50 @@
+{% extends "_base.html" %}
+
+{% block content %}
+    {% include "navbar.html" %}
+
+    <div class="container mt-5">
+        <h2 class="{{dynamic_texts.header_class.text}}">Task List</h2>
+        <div class="task-list mb-4">
+            <ul class="list-group">
+                {% for task in tasks %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <h5><a href="{% url 'task_detail' task.id %}" style="text-decoration: none;">{{ task.title }}</a></h5>
+                        {% if task.status == 'open' %}
+                            <form method="post" action="{% url 'mark_task_done' task.id %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success btn-sm">Mark as Done</button>
+                            </form>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        {# Toggle link for done tasks #}
+        <div class="done-toggle-link mb-4">
+            {% if show_done_tasks %}
+                <a href="{% url 'task_list' %}?show_done_tasks=false" class="btn btn-link">Hide Done Tasks</a>
+                <h2 class="font-weight-bold mt-3">Done Tasks</h2>
+            {% else %}
+                <a href="{% url 'task_list' %}?show_done_tasks=true" class="btn btn-link">Show Done Tasks</a>
+            {% endif %}
+        </div>
+
+        <div class="done-task-list mb-4">
+            <ul class="list-group">
+                {% for task in done_tasks %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{% url 'task_detail' task.id %}" style="text-decoration: none;">{{ task.title }}</a>
+                        <form method="post" action="{% url 'mark_task_open' task.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-warning btn-sm">Undo Done</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <a href="{% url 'add_task' %}" class="{{dynamic_texts.btn.text}}">Add Task</a>
+    </div>
+{% endblock %}

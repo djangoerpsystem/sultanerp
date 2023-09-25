@@ -1,0 +1,30 @@
+{% extends "_base.html" %}
+
+{% block title %}
+CSV Uploader
+{% endblock %}
+{% block content %}
+{% include "navbar.html" %}
+
+<br>
+    <a href="{% url 'admin_tools' %}"><-- Back to Admin Tools</a>
+<br><br>
+
+<h1>CSV {{uploader}} Products uploader</h1>
+<br>
+{% comment %} https://www.w3schools.com/tags/att_form_enctype.asp {% endcomment %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_ul }} <!--#"https://www.geeksforgeeks.org/form-as_p-render-django-forms-as-paragraph/"-->
+    <br><button class="{{dynamic_texts.btn.text}}" type="submit">Upload</button>
+</form>
+
+{% if success_msg %}
+<div class="alert alert-success" role="alert">
+    {{ success_msg }}
+</div>
+{% endif %}
+
+
+
+{% endblock %}

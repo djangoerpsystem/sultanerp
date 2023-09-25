@@ -1,0 +1,32 @@
+{% extends "crm/_cardbase.html" %}
+{% block title %}
+CRM
+{% endblock %}
+{% block content %}
+{% include "navbar.html" %}
+
+<h1>Customer Relationship Management</h1>
+<br>
+
+<div class="kanban-board">
+    <div class="kanban-column" data-status="Inbox">
+        <h2>Inbox</h2>
+        {% include "crm/crm_cardset.html" with notices=inbox_items %}
+    </div>
+    <div class="kanban-column" data-status="In Progress">
+        <h2>In Progress</h2>
+        {% include "crm/crm_cardset.html" with notices=in_progress_items %}
+    </div>
+    <div class="kanban-column" data-status="Done">
+        <h2>Done</h2>
+        {% include "crm/crm_cardset.html" with notices=done_items %}
+    </div>
+    <div class="kanban-column" data-status="Archive">
+        <h2>Archive</h2>
+        {% include "crm/crm_cardset.html" with notices=archive_items %}
+    </div>
+</div>
+
+{% include "crm/crm_contactform1.html"%}
+
+{% endblock %}

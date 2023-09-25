@@ -1,0 +1,21 @@
+{% for notice in notices %}
+    <div class="card draggable" data-id="{{ notice.id }}" 
+    style="border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;">
+        <div class="card-header">
+            {{ notice.form_name|add:notice.id|stringformat:"s" }}
+            {{ notice.form_name }}{{ notice.id }}
+        </div>
+        <div class="card-body">
+            <p>Email: {{ notice.email }}</p>
+            <p>Phone: {{ notice.phone }}</p>
+            <p>Company: {{ notice.field1 }}</p>
+            <p>Name: {{ notice.field3 }}</p>
+            <p>Text: {{ notice.field4 }}</p>
+        </div>
+    </div>
+    <br>
+    {% endfor %}

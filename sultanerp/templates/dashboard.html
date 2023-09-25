@@ -1,0 +1,57 @@
+<!-- templates/dashboard.html -->
+{% extends '_base.html' %}
+
+{% block content %}
+{% include "navbar.html" %}
+
+    <div class="row">
+        <div class="col-md-6">
+            {% include 'dashboard/tasks.html' %}
+        </div>
+        <div class="col-md-6">
+            {% include 'dashboard/todays_tasks.html' %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            {% include 'dashboard/routines.html' %}
+    </div>
+
+        <div class="col-md-6">
+            {% include 'dashboard/termine.html' %}  
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            {% include 'dashboard/crm.html' %}
+        </div>
+        <div class="col-md-6">
+            {% include 'dashboard/messenger.html' %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            {% include 'dashboard/orders.html' %}
+        </div>
+                <div class="col-md-6">
+            {% include 'dashboard/retouremanagement.html' %}
+        </div>
+
+        <div class="col-md-6">
+            {% include 'dashboard/get_cake_id.html' %}
+        </div>
+    </div>
+
+    <div class="row">
+    
+
+    </div>
+
+
+
+
+{% endblock %}

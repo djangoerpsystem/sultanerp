@@ -1,0 +1,76 @@
+{% extends "_base.html" %}
+
+{% block content %}
+{% include "navbar.html" %}
+
+<div class="container mt-5">
+    <h2 class="font-weight-bold">{% if edit_mode %}Edit{% else %}Add{% endif %} Task</h2>
+
+    <form method="post" action="{% if edit_mode %}{% url 'edit_task' task.id %}{% else %}{% url 'add_task' %}{% endif %}">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" name="title" id="title" value="{{ task.title|default:'' }}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="due_date">Due Date:</label>
+            <input type="date" name="due_date" id="due_date" value="{{ task.dueDate|date:"Y-m-d"|default:'' }}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="responsible_person">Responsible Person:</label>
+            <select name="responsible_person" id="responsible_person" class="form-control" required>
+                <option value="">None</option>
+                {% for user in users %}
+                    <option value="{{ user.id }}" {% if user.id == task.responsiblePerson.id %}selected{% endif %}>{{ user.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select name="status" id="status" class="form-control" required>
+                <option value="open" {% if task.status == 'open' %}selected{% endif %}>Open</option>
+                <option value="done" {% if task.status == 'done' %}selected{% endif %}>Done</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea name="description" id="description" class="form-control">{{ task.description|default:'' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="priority">Priority:</label>
+            <select name="priority" id="priority" class="form-control" required>
+                <option value="1" {% if task.priority == 1 %}selected{% endif %}>Low</option>
+                <option value="2" {% if task.priority == 2 or not task.priority %}selected{% endif %}>Normal</option>
+                <option value="3" {% if task.priority == 3 %}selected{% endif %}>High</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <input type="text" name="category" id="category" value="{{ task.category|default:'' }}" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-success mb-3">{% if edit_mode %}Update{% else %}Add{% endif %} Task</button>
+    </form>
+
+    {% if edit_mode %}
+        <button type="button" class="btn btn-danger mb-3" onclick="confirmDelete()">Löschen</button>
+        <script>
+            function confirmDelete() {
+                let confirmation = confirm("Sind Sie sicher, dass Sie die Aufgabe löschen möchten?");
+                if (confirmation) {
+                    window.location.href = "{% url 'delete_task' task.id %}";
+                }
+            }
+        </script>
+    {% endif %}
+<br>
+    <a href="{% url 'task_list' %}" class="btn btn-warning mb-2">{{dynamic_texts.back.text}}</a>
+</div>
+{% endblock %}

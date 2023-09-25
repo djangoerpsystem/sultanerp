@@ -1,0 +1,54 @@
+<script>
+    // jQuery https://api.jqueryui.com/
+
+    $(function() {
+        $(".draggable").draggable({         //https://api.jqueryui.com/draggable/
+             
+            revert: "invalid",           // https://api.jqueryui.com/draggable/#option-revert
+            helper: "clone",                //https://api.jqueryui.com/draggable/#option-helper
+            zIndex: 10000,              // https://api.jqueryui.com/draggable/#option-zIndex
+
+            start: function(event, ui) { // https://api.jqueryui.com/draggable/#event-start
+                $(this).data("originalPosition", $(this).position());
+                $(this).hide();
+            },
+            stop: function(event, ui) { // https://api.jqueryui.com/draggable/#event-stop
+                if(!ui.helper.hasClass('ui-draggable-dropped')) {
+                    $(this).show();
+                }
+            }
+        });
+        
+        $(".kanban-column").droppable({ // https://api.jqueryui.com/droppable/
+            accept: ".draggable",       // https://api.jqueryui.com/droppable/#option-accept
+            drop: function(event, ui) { // https://api.jqueryui.com/droppable/#event-drop
+                const itemId = ui.draggable.attr('data-id');
+                const newStatus = $(this).attr('data-status');
+                $(this).append(ui.draggable);
+                ui.draggable.addClass('ui-draggable-dropped'); 
+                ui.draggable.css({
+                    top: 'auto',
+                    left: 'auto'
+                });
+                ui.draggable.show();
+                updateStatus(itemId, newStatus, ui.draggable);
+            }
+        });
+    });
+
+    function updateStatus(id, status, draggableItem) {     ///jQuery togheter with AJAX: https://api.jquery.com/jquery.ajax
+        $.ajax({
+            url: "{% url 'update_crm_status' %}",
+            method: "POST",
+            data: {
+                id: id,
+                status: status,
+                csrfmiddlewaretoken: "{{ csrf_token }}"
+            },
+            function(response) {
+                let targetColumn = $(".kanban-column[data-status='" + status + "']");
+                draggableItem.appendTo(targetColumn);
+            },
+        });
+    }
+</script>

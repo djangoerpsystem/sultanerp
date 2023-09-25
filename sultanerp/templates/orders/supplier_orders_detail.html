@@ -1,0 +1,53 @@
+{% extends "_base.html" %}
+
+{% block title %}
+    Supplier Order Detail
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+
+
+    <div class="container mt-3">
+        <h3 class="mb-4">Supplier Order ID: {{order.id}}</h3>
+
+        <div class="order-info mb-4">
+            <p>Delivery Date: <strong>{{ order.delivery_date|date:"j. F Y" }}</strong></p>
+            <p>Store Branch: <strong>{{ order.get_store_branch_display }}</strong></p>
+        </div>
+
+        {% if products %}
+            <h4 class="mb-2">Produkte:</h4>
+            <p>Lieferant: <strong>{{ order.supplier.title }}</strong></p>
+            <ul class="list-group mb-4">
+                {% for product, amount in products %}
+                <li class="list-group-item">
+                    <strong>{{ product.title }} {{product.inhalt}} {{product.unit.units}}</strong>
+                    {% if product.artNr %}
+                        (ArtNr: {{ product.artNr }})
+                    {% endif %}
+                    - Menge: <strong>{{ amount }}x</strong>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No products associated with this order.</p>
+        {% endif %}
+
+        <p><strong>Total Order Amount: {{ total_order_amount }}</strong></p>
+        <hr>
+        <p>Order Date: <strong>{{ order.order_time }}</strong></p>
+        <p>Ordered by: <strong>{{ order.ordering_person.first_name }} {{ order.ordering_person.last_name }}</strong></p>
+
+        <br>
+
+        <div class="mb-3">
+            <button type="button" class="btn btn-secondary mb-2" onclick="printPage()">{{dynamic_texts.print.text}}</button>
+            <a href="{% url 'supplier_orders' %}" class="{{dynamic_texts.btn.text}}">{{dynamic_texts.new_order.text}}</a>
+        </div>
+    {% load static%}
+    <script src="{% static '/sultanerp/javascript/print.js' %}"></script> <!-- Print page-->
+
+    </div>
+
+{% endblock %}

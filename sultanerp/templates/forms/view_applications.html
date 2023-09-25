@@ -1,0 +1,77 @@
+{% extends "_base.html" %}
+
+{% block content %}
+{% include "navbar.html" %}
+
+<div class="container mt-5">
+    <h3 class="{{dynamic_texts.header_class.text}}">Eingegangene Urlaubsanträge</h3>
+
+    <form method="post">
+    {% csrf_token %}
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Insgesamt Tage</th>
+                <th>Sonntage & Feiertage</th>
+                <th>Netto Urlaubstage</th>
+                <th>Timestamp</th>
+                <th>Status</th>
+                {% if is_admin %}
+                <th>Approve</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for app in applications %}
+                {% if is_admin or app.user == request.user %}
+                    <tr>
+                        <td>{{app.id}}</td>
+                        <td>{{ app.user.first_name }} {{ app.user.last_name }}</td>
+                        <td>{{ app.start_date }}</td>
+                        <td>{{ app.end_date }}</td>
+                        <td>{{ app.days_requested }}</td>
+                        <td>{{ app.free_days }}</td>
+                        <td>{{ app.vacation_days }}</td>
+                        <td>{{ app.timestamp }}</td>
+                        <td>{{ app.approval }}</td>
+                
+                        {% if is_admin %}
+                        <td>
+                            <input type="checkbox" name="approve_{{ app.id }}" {% if app.approval == "yes" %}checked{% endif %}>
+                        </td>
+                        {% endif %}
+                    </tr>
+                {% endif %}
+            {% endfor %} 
+        </tbody>
+    </table>
+</div>
+    {% if is_admin %}
+        <button type="submit" class="btn btn-outline-secondary mb-4">Update Status</button>
+    {% endif %}
+    </form>
+
+    <div class="pagination mt-4">
+        <span class="step-links">
+            {% if applications.has_previous %}
+                <a href="?page=1" class="btn btn-light btn-sm mr-2">&laquo; first</a>
+                <a href="?page={{ applications.previous_page_number }}" class="btn btn-light btn-sm mr-2">previous</a>
+            {% endif %}
+
+            <span class="current mx-3">
+                Page {{ applications.number }} of {{ applications.paginator.num_pages }}.
+            </span>
+
+            {% if applications.has_next %}
+                <a href="?page={{ applications.next_page_number }}" class="btn btn-light btn-sm mr-2">next</a>
+                <a href="?page={{ applications.paginator.num_pages }}" class="btn btn-light btn-sm">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}

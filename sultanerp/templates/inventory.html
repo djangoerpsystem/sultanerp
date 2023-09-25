@@ -1,0 +1,61 @@
+{% extends "_base.html" %}
+
+{% block title %}
+{{dynamic_texts.inventory.text}}
+{% endblock %}
+
+{% block content %}
+{% load custom_tags %}
+{% include "navbar.html" %}
+
+<div class="container mt-4">
+
+    <a href="{% url 'deposit' %}"><h5 class="{{dynamic_texts.btn.text}}">{{dynamic_texts.add.text}} {{dynamic_texts.deposit.text}}</h5></a>
+
+    {% if allow_add_item %}
+        <div class="card mb-3">
+
+            <div class="card-header" data-toggle="collapse" href="#addInventory" role="button">
+            Add New {{dynamic_texts.inventory.text}} Item
+            </div>
+            
+            <div class="collapse" id="addInventory">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="{{dynamic_texts.btn_green.text}}">Add Item</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    <h2 class="{{dynamic_texts.header_class.text}}">{{dynamic_texts.inventory.text}}</h2>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+        {% order_table_header request.GET.order_by request.GET.direction %}
+        </thead>
+        <tbody>
+            {% for item in inventory %}
+                <tr>
+                    <td>{{ item.section }}</td>
+                    <td>{{ item.category }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.boughtOn }}</td>
+                    <td>{{ item.storedIn }}</td>
+                    <td>
+                        {% if item.value %}
+                            {{ item.value }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>{{ item.amount }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+</div>
+{% endblock %}

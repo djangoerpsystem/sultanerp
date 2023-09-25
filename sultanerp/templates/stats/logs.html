@@ -1,0 +1,20 @@
+{% extends "_base.html" %}
+
+{% block title %}
+Logs
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+{% include "stats/_logs.html" %}
+<br>
+
+{% if request.resolver_match.url_name == 'routine_task_logs' %}
+    {% include "stats/routine_task_logs.html" %}
+{% endif %}
+
+{% if request.resolver_match.url_name == 'login_logs' %}
+    {% include "stats/login_logs.html" %}
+{% endif %}
+
+{% endblock %}

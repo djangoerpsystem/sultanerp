@@ -1,0 +1,110 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block title %}
+    Customer Orders
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+{% include "_orders.html" %}
+
+<div class="container mt-4">
+    <div class="sticky-top bg-white py-2">
+        <h3>{{dynamic_texts.customer_orders.text}}</h3>
+    </div>
+
+        <a href="{% url 'customer_orders_list_view' %}" class="{{dynamic_texts.btn.text}}">Show order list</a>    
+    <br><br>
+    <div class="card">
+        <div class="card-body">
+            <form action="{% url 'customer_orders' %}" method="post">
+                {% csrf_token %}
+
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="customer_name">Customer Name:</label>
+                        <input type="text" name="customer_name" class="form-control" required placeholder="{{dynamic_texts.name_field.text}}">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="customer_tel">Tel. Nr.:</label>
+                        <input type="tel" name="customer_tel" class="form-control" required placeholder="{{dynamic_texts.tel_format.text}}" pattern="\d*" minlength="8" maxlength="16">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="order_type">Auftragstyp:</label>
+                    <select name="order_type" id="orderType" class="form-control" onchange="toggleOrderType();" data="{{dynamic_texts.delivery}}">
+                        <option value="{{dynamic_texts.pickup}}">{{dynamic_texts.pickup.text}}</option>
+                        <option value="{{dynamic_texts.delivery}}">{{dynamic_texts.delivery.text}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="delivery" style="display: none;">
+                    <label for="delivery_address">Lieferadresse:</label>
+                    <input type="text" name="delivery_address" id="delivery_address" class="form-control">
+                </div>
+
+                <div class="form-group branch">
+                    <label for="branch">Filiale:</label>
+                    <select name="branch" class="form-control" required>
+                        {% for branch in branches %}
+                            <option value="{{ branch.id }}" {% if branch.id == selected_branch %}selected{% endif %}>{{ branch.branchTitle }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group delivery-date">
+                    <label for="delivery_date_time">Lieferdatum und Zeit:</label>
+                    <input type="datetime-local" name="delivery_date" value="{{ selected_date }}" class="form-control" required>
+                </div>
+
+
+                <div class="form-group category-selection">
+                    <select name="category" class="form-control">
+                        <option value="">Alle Produkte</option>
+                        {% for category in categories %}
+                            <option value="{{ category }}" {% if category == selected_category %}selected{% endif %}>{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="button" onclick="filterCategory();" class="{{dynamic_texts.btn.text}}">Bereich wählen</button>
+                </div>
+
+                {% for product in internal_products %}
+                <div class="form-group">
+                    <label>{{ product.title }}</label>
+                    <input type="hidden" name="product_ids" value="{{ product.id }}">
+                    <input type="number" name="amounts_{{ product.id }}" class="form-control" placeholder="{{dynamic_texts.order_amount.text}}">
+                </div>
+                {% endfor %}
+
+                <div class="form-group">
+                    <label for="total_price">Total Price:</label>
+                    <input type="text" name="total_price" class="form-control" placeholder="Enter Total Price">
+                </div>
+                {% comment %} https://www.w3schools.com/tags/att_input_pattern.asp the pattern attribute {% endcomment %}
+                <div class="form-group">
+                    <label for="quittung">Quittung:</label>
+                    <input type="text" id="quittungField" name="quittung" class="form-control" placeholder="{{dynamic_texts.quittung.text}}" pattern="^[1-9]\d{5}$">
+                </div>
+
+                <div class="form-check mb-3" id="paidCheckbox" style="display: none;">
+                    <input type="checkbox" name="paid" class="form-check-input">
+                    <label class="form-check-label" for="paid">Paid</label>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="{{dynamic_texts.btn_green.text}}" onclick="return checkAmounts();">{{dynamic_texts.place_order.text}}</button>
+                    <input type="hidden" name="action_type" value="order">
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+<script src="{% static '/sultanerp/javascript/toggleOrderType.js' %}"></script> <!-- Filter by order type -->
+<script src="{% static '/sultanerp/javascript/filterCategory.js' %}"></script> <!-- Filter by category -->
+<script src="{% static '/sultanerp/javascript/checkAmounts.js' %}"></script> <!-- helper function to check that amounts aren't negative-->
+
+
+{% endblock %}

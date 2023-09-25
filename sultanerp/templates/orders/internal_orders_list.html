@@ -1,0 +1,25 @@
+{% extends "_base.html" %}
+
+{% block title %}
+    Internal Orders List
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+{% include "_orders.html" %}
+
+<div class="container mt-4">
+    <h1>Internal Orders List</h1>
+    
+    <ul class="list-group mt-3">
+        {% for order in all_internal_orders %}
+            <li class="list-group-item">
+                <a href="{% url 'internal_order_detail' order.id %}">{{ dynamic_texts.order.text }} {{ order.id }}</a>, 
+                {{ order.orderDate|date:"d.m.y" }}, 
+                {{ order.branch.branchTitle }}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

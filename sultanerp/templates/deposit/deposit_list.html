@@ -1,0 +1,66 @@
+{% extends "_base.html" %}
+
+{% block content %}
+{% include "navbar.html" %}
+
+<div class="container mt-4">
+
+    <div class="card">
+        <div class="card-header">
+            {{dynamic_texts.deposit.text}}
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date & User</th>
+                        <th>{{dynamic_texts.branch.text}}</th>
+                        <th>{{dynamic_texts.deposit.text}}</th>
+                        <th>Value</th>
+                        <th>Customer Name</th>
+                        <th>Customer Tel.</th>
+                        <th>Paid Back</th>
+                        <th>Paid Back Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for deposit in deposits %}
+                    <tr>
+                        <td>{{ deposit.id }}</td>
+                        <td>
+                            {{ deposit.timestamp|date:"d.m.Y H:i" }}<br> 
+                            <span class="float-right">{{ user.username }}</span>
+                        </td>
+                        <td>{{ deposit.branch }}</td>
+                        <td>{{ deposit.deposit_object.deposit }}</td>
+                        <td>{{ deposit.value }} €</td>
+                        <td>{{ deposit.customer_name }}</td>
+                        <td>{{ deposit.customer_tel }}</td>
+                        <td>
+                            {% if deposit.paid_back %}
+                                Yes
+                            {% else %}
+                                No
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if deposit.paid_back_date %}
+                                {{ deposit.paid_back_date|date:"d.m.Y" }}
+                            {% else %}
+                                - 
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8">No deposits found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

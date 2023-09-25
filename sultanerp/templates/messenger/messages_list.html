@@ -1,0 +1,35 @@
+<form method="get" action="{% url 'send_message_no_id' %}" class="mb-4">
+    <div class="form-group">
+        <select name="recipient_id" class="form-control">
+            {% for user in all_users_except_current %}
+                <option value="{{ user.id }}">{{ user.username }}</option>
+            {% endfor %}
+        </select>
+    </div><br>
+    <button type="submit" class="{{dynamic_texts.btn.text}}">Start {{dynamic_texts.chat.text}}</button>
+</form>
+
+{% with conversational_partners|dictsortreversed:"latest_message_timestamp" as sorted_partners %}
+    {% for partner in sorted_partners %}
+        <div class="container mt-4">
+            <div class="card">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <a href="{% url 'send_message_no_id' %}?recipient_id={{ partner.user.id }}">
+                                {{ partner.user.username }}
+                            </a>
+                            {% if partner.unread_count %}
+                                <strong> ({{ partner.unread_count }} {{dynamic_texts.new_messages.text}})</strong>
+                            {% endif %}
+                            {% if partner.latest_message_timestamp %}
+                                <br>
+                                <small class="text-muted">{{dynamic_texts.last_message.text}} {{ partner.latest_message_timestamp }}</small>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endwith %}

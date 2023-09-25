@@ -1,0 +1,58 @@
+{% extends '_base.html' %}
+{% block content %}
+{% if user.is_staff %}
+
+{% block title %}
+    Add Routine
+{% endblock %}
+
+{% include "navbar.html" %}
+
+<h2>Add Routine</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label>Title: <input type="text" name="title"></label><br>
+    <label>User: 
+        <select name="user">
+            {% for user in users %}
+            <option value="{{ user.id }}">{{ user.username }}</option>
+            {% endfor %}
+        </select>
+    </label><br>
+    <label>Due Date: <input type="datetime-local" name="due_date"></label><br>
+    <label>Store: 
+        <select name="store">
+            {% for store in stores %}
+            <option value="{{ store.id }}">{{ store.branchTitle }}</option>
+            {% endfor %}
+        </select>
+    </label><br>
+    <label>Frequency: 
+        <select name="frequency">
+            <option value="">-----</option>
+            {% for freq in frequencies %}
+            <option value="{{ freq.id }}">{{ freq.frequency }}</option>
+            {% endfor %}
+        </select>
+    </label><br>
+    <label>Routines:</label><br>
+    {% for routine in routines %}
+    <input type="checkbox" name="routine" value="{{ routine.id }}">{{ routine.routines }}<br>
+    {% endfor %}
+    <label>Place: 
+        <select name="place">
+            <option value="">-----</option>
+            {% for place in places %}
+            <option value="{{ place.id }}">{{ place.places }}</option>
+            {% endfor %}
+        </select>
+    </label><br>
+    <input type="submit" value="Add Routine">
+</form>
+
+{% else %}
+    <p>{{dynamic_texts.not_auth.text}}</p>
+{% endif %}
+
+{% endblock %}

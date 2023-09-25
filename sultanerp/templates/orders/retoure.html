@@ -1,0 +1,67 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block title %}
+    Retoure
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+{% include "_orders.html" %}
+
+<div class="container mt-4">
+    <div class="sticky-top bg-white py-2">
+        <h3>{{dynamic_texts.retoure_management.text}}</h3>
+    </div>
+
+    <a href="{% url 'retoure_list' %}" class="{{dynamic_texts.btn.text}}">Show retoure list</a>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <form action="{% url 'retoure' %}" method="post">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="branch">Filiale:</label>
+                    <select name="branch" class="form-control" required>
+                        {% for branch in branches %}
+                        <option value="{{ branch.id }}" {% if branch.id == selected_branch %}selected{% endif %}>{{ branch.branchTitle }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <select name="category" class="form-control">
+                        <option value="">Alle Produkte</option>
+                        {% for category in categories %}
+                        <option value="{{ category }}" {% if category == selected_category %}selected{% endif %}>{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <button type="button" onclick="filterCategory()" class="{{dynamic_texts.btn.text}}">{{dynamic_texts.select_area.text}}</button>
+                </div>
+
+                {% for product in internal_products %}
+                <div class="form-group">
+                    <label>{{ product.title }}</label>
+                    <input type="hidden" name="product_ids" value="{{ product.id }}">
+                    <input type="number" name="amounts_{{ product.id }}" class="form-control" min="0" max="1000" placeholder="">
+                </div>
+                {% endfor %}
+
+                <div class="form-group mt-3">
+                    <button type="submit" onclick="return checkAmounts();" class="{{dynamic_texts.btn_green.text}}">{{dynamic_texts.send_retoure.text}}</button>
+                </div>
+                <input type="hidden" name="action_type" value="retoure">
+            </form>
+        </div>
+    </div>
+
+    <script src="{% static '/sultanerp/javascript/filterCategory.js' %}"></script> <!-- Filter by category -->
+    <!-- checkAmounts helper function to check if amounts aren't negative -->
+    <script src="{% static '/sultanerp/javascript/checkAmounts.js' %}"></script>
+</div>
+
+{% endblock %}

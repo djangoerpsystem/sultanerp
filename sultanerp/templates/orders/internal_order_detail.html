@@ -1,0 +1,36 @@
+{% extends "_base.html" %}
+
+{% block title %}
+    Internal Order Detail
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+
+<div class="container mt-4">
+    <h3>Produktion Bestellung ID: {{ order.id }}</h3>
+    <div class="mb-3">
+        <p><strong>Lieferdatum:</strong> {{ order.orderDate }}</p>
+        <p><strong>Filiale:</strong> {{ order.branch.branchTitle }}</p>
+        <h4>Produkte:</h4>
+        <ul class="list-group">
+            {% for product, amount in products %}
+                <li class="list-group-item">{{ product.title }} (Anzahl: {{ amount|default:"0" }})</li>
+            {% endfor %}
+        </ul>
+        <p><strong>Gesamte Bestellmenge:</strong> {{ total_order_amount }}</p>
+    </div>
+
+    <hr>
+    <p><strong>Bestelldatum:</strong> {{ order.timeStamp }}</p>
+    <p><strong>Bestellt von:</strong> {{ user.first_name }} {{user.last_name}}</p>
+    <br>
+
+    <div class="mb-3">
+        <button type="button" class="btn btn-secondary mb-2" onclick="printPage()">{{dynamic_texts.print.text}}</button>
+        <a href="{% url 'internal_orders' %}" class="{{dynamic_texts.btn.text}}">{{dynamic_texts.new_order.text}}</a>
+    </div>
+    {% load static%}
+    <script src="{% static '/sultanerp/javascript/print.js' %}"></script> <!-- Print page-->
+
+{% endblock %}

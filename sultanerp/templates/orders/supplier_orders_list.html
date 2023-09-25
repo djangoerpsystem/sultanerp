@@ -1,0 +1,25 @@
+{% extends "_base.html" %}
+
+{% block title %}
+    Supplier Order List
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+{% include "_orders.html" %}
+
+<div class="container mt-4">
+    <h1>Lieferanten Bestellungen</h1>
+    
+    <ul class="list-group mt-3">
+        {% for order in all_supplier_orders %}
+            <li class="list-group-item">
+                <a href="{% url 'supplier_order_detail' order.id %}">{{ dynamic_texts.order.text }} {{ order.id }}</a>, 
+                {{ order.delivery_date|date:"d.m.y" }}, 
+                {{ order.supplier.title }}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

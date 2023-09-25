@@ -1,0 +1,27 @@
+{% extends "_base.html" %}
+
+{% block title %}
+    Customer Order List
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+{% include "_orders.html" %}
+
+<div class="container mt-4">
+    <h1>Customer Orders List</h1>
+    
+    <ul class="list-group mt-3">
+        {% for order in all_customer_orders %}
+            <li class="list-group-item">
+                <a href="{% url 'customer_order_detail' order.id %}" class="text-decoration-none">
+                    {{ dynamic_texts.order.text }} {{ order.id }}
+                </a>, 
+                <span class="text-muted">{{ order.orderDate|date:"d.m.y" }}</span>, 
+                {{ order.branch.branchTitle }}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

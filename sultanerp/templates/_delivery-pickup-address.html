@@ -1,0 +1,10 @@
+{% if order.delivery_address %}
+    <p>{{ dynamic_texts.delivery_date.text }}: {{ order.orderDate }}</p>
+    <p>{{ dynamic_texts.delivery_address.text }}: {{ order.delivery_address }}</p>
+{% elif order.pickup_address %}
+    <p>{{ dynamic_texts.pickup_date.text }}: {{ order.orderDate }}</p>
+    <p>{{ dynamic_texts.pickup_address.text }}: {{ order.pickup_address }}</p>
+{% else %}
+    <p>{{ dynamic_texts.pickup_date.text }}: {{ order.orderDate }}</p>
+    <p>Filiale: {{ order.branch.branchTitle }}</p>
+{% endif %}

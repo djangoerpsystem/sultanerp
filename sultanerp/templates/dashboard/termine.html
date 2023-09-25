@@ -1,0 +1,13 @@
+{% comment %} Termine widget {% endcomment %}
+<div class="card mt-3">
+    <div class="card-body">
+        <h5 class="card-title">Calendar Entries</h5>
+        <ul>
+            {% for entry in calendar_entries %}
+                <li>{{ entry.termin }} - Date: {{ entry.date }} - Time: {{ entry.time }}</li>
+            {% empty %}
+                <li>No calendar entries available.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

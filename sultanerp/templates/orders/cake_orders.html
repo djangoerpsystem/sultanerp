@@ -1,0 +1,33 @@
+    <div class="sticky-top bg-white py-2 mb-4">
+        <h3>{{ dynamic_texts.cake_orders.text }}</h3>
+    </div>
+
+{% include "orders/get_cake_id.html" %}
+
+<br>
+
+{% for order in orders %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Bestell-Nr: {{ order.id }}</h5>
+
+            <p class="card-text">Bestelldatum: {{ order.orderDate }}</p>
+            <p class="card-text">Torten Gesamtpreis: {{ order.cakePrice|floatformat:2}} €</p>
+            <p class="card-text">Quittungs-Nr.: {{ order.quittung }}</p>
+            <p class="card-text">{{dynamic_texts.order_type.text}} {{ order.ordertype }}</p>
+
+            <hr>
+            <small>
+                <p class="card-text">
+                    {{dynamic_texts.timestamp.text}}: {{ order.timeStamp|date:"l" }} - {{ order.timeStamp|date:"d.m.y" }}, {{ order.timeStamp|date:"H:i" }} Uhr
+                </p>
+            </small>
+
+            
+            <small class="card-text">Mitarbeiter: {{ order.user.first_name }} {{ order.user.last_name }}</small>
+
+
+        </div>
+    </div>
+    <br>
+{% endfor %}

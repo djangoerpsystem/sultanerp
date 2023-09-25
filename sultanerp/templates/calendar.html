@@ -1,0 +1,38 @@
+{% extends "_base.html" %}
+
+    {% block title %}
+    Calendar
+    {% endblock %}
+    {% block content %}
+    {% include "navbar.html" %}
+    <h1>Monthly Calendar</h1>
+    <a href="?year={{ prev_month.year }}&month={{ prev_month.month }}">Previous Month</a>
+    <a href="?year={{ next_month.year }}&month={{ next_month.month }}">Next Month</a>
+    <table border="1">
+        <tr>
+            <th colspan="7">{{ monthly_calendar.0.0.month_name }} {{ monthly_calendar.0.0.year }}</th>
+        </tr>
+        <tr>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+            <th>Sun</th>
+        </tr>
+        {% for week in monthly_calendar %}
+        <tr>
+            {% for day_data in week %}
+            <td {% if day_data.is_today %}style="background-color: yellow"{% endif %}>
+                {% if day_data %}
+                    {{ day_data.day }}
+                {% else %}
+                    &nbsp;
+                {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

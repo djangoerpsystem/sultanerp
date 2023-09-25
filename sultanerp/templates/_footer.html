@@ -1,0 +1,35 @@
+{% if user.is_authenticated %}
+
+<div class="container">
+    <div style="min-height: 10em;"></div>
+    <footer class="py-3 my-4">
+        <ul class="nav border-bottom pb-3 mb-3">
+            {% if user.is_authenticated %}
+
+                <li class="nav-item">
+                    <a class="nav-link px-2 text-muted">{{dynamic_texts.welcome.text}}: {{user.username}}</a>
+                </li>
+        {% if user.user_level.role == 'admin' %}
+                <li class="nav-item">
+                    <a class="nav-link px-2 text-muted" href="{% url 'admin_tools' %}">Admin Tools</a>
+                </li>
+        {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link px-2 text-muted" href="{% url 'password_change' %}">Change Password</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-2 text-muted" href="{% url 'logout' %}">Logout</a>
+                </li>
+                <li>
+                    <a class="nav-link px-2 text-muted" style="font-style: italic;"><small>(Powered by A. Ozdemir)</small</a>
+                </li>
+
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link px-2 text-muted" href="{% url 'tools' %}">Login</a>
+                </li>
+            {% endif %}
+        </ul>
+    </footer>
+</div>
+{% endif%}
