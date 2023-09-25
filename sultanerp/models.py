@@ -464,7 +464,7 @@ class VacationApplication(models.Model):
         self.days_requested = (self.end_date - self.start_date).days + 1
 
         public_holidays_in_range = PublicHoliday.objects.filter(
-            date_range=[self.start_date, self.end_date])
+            date__range=[self.start_date, self.end_date])
         self.days_on_holiday = public_holidays_in_range.count()
 
         current_date = self.start_date
