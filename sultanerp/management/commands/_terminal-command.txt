@@ -1,0 +1,28 @@
+ python manage.py fetch_holidays 2023
+ python manage.py fetch_holidays 2024
+ python manage.py fetch_holidays 2025
+
+
+# try to schedule a Django management command to run periodically
+# i dont know if the crontab worked so i run the commands above manually for development
+
+ crontab -e
+
+0 0 * * * /path/to/your/python /path/to/your/manage.py fetch_holidays 2023 >> /path/to/logfile.log 2>&1
+
+# https://www.freeformatter.com/cron-expression-generator-quartz.html
+
+# minute: 0 * * ? * *
+
+# every hour 0 0 * ? * *
+
+# every day at midnight 0 0 0 * * ?
+
+# every year starting in 2023 0 * * ? * * 2023/1
+
+
+# https://docs.celeryq.dev/en/stable/index.html 
+# Celery with DJANGO (Celery - Distributed Task Queue))
+
+#Remove crontab files
+# https://docs.oracle.com/cd/E19253-01/817-0403/sysrescron-17/index.html
