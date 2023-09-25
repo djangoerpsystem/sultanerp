@@ -1,0 +1,1 @@
+ArtNr,Title,Units,Inhalt,Suppliers
